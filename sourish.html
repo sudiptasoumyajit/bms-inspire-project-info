@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Parking System — Sourish Koner</title>
+<style>
+:root {
+  --bg1: #f0fff5;
+  --bg2: #e3f9e5;
+  --accent: #2f7a4a;
+  --accent2: #66b26b;
+  --muted: #555;
+  --card: rgba(255, 255, 255, 0.96);
+  --radius: 12px;
+  --shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(180deg, var(--bg1), var(--bg2));
+  color: #123;
+  line-height: 1.6;
+}
+.container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 16px;
+}
+header {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+header h1 {
+  color: var(--accent);
+  font-size: 1.8rem;
+}
+header p {
+  color: var(--muted);
+  font-size: 1rem;
+}
+main {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+@media (min-width: 768px) {
+  main {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px;
+}
+.section-title {
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 999px;
+  display: inline-block;
+  margin-bottom: 12px;
+  font-weight: bold;
+}
+ul { padding-left: 20px; }
+footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin-top: 20px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+  <h1>Smart Parking System</h1>
+  <p>Designed and Developed by <strong>Sourish Koner</strong></p>
+</header>
+
+<main>
+  <section class="card">
+    <div class="section-title">Project Overview</div>
+    <p>The Smart Parking System is an Arduino-based solution for efficient vehicle parking management. Using ultrasonic or IR sensors, it detects the availability of parking slots and provides real-time status updates to users.</p>
+    
+    <div class="section-title">Mechanism</div>
+    <ul>
+      <li><strong>Sensors Detection:</strong> Ultrasonic or IR sensors at each parking slot detect presence by measuring distance or beam obstruction.</li>
+      <li><strong>Arduino Microcontroller:</strong> Collects and processes data from sensors to determine slot availability.</li>
+      <li><strong>Display System:</strong> Shows status of each slot on LCD/LED display (e.g., "Slot 1: Free") and optionally on mobile/web via Wi-Fi (ESP8266) or Bluetooth.</li>
+      <li><strong>Entry Control (Optional):</strong> Servo motor or barrier gate allows/restricts entry based on availability.</li>
+      <li><strong>Power Supply:</strong> Operates on DC source or batteries.</li>
+    </ul>
+    
+    <div class="section-title">Benefits</div>
+    <ul>
+      <li>Reduces time spent searching for parking.</li>
+      <li>Provides real-time monitoring.</li>
+      <li>Scalable for large parking lots.</li>
+    </ul>
+  </section>
+
+  <aside class="card">
+    <div class="section-title">Quick Facts</div>
+    <p><strong>Controller:</strong> Arduino</p>
+    <p><strong>Sensors:</strong> Ultrasonic / IR</p>
+    <p><strong>Connectivity:</strong> Wi-Fi (ESP8266) / Bluetooth</p>
+    <p><strong>Display:</strong> LCD / LED</p>
+    <p><strong>Power:</strong> DC / Battery</p>
+    
+    <div class="section-title">Possible Upgrades</div>
+    <ul>
+      <li>Integrate mobile app notifications</li>
+      <li>Automated payment system</li>
+      <li>License plate recognition</li>
+    </ul>
+  </aside>
+</main>
+
+<footer>
+  &copy; 2025 Smart Parking System — Sourish Koner
+</footer>
+</div>
+</body>
+</html>

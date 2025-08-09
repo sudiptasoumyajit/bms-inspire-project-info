@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Wi-Fi Controlled Car — Project</title>
+  <meta name="description" content="A Wi-Fi controlled robot car using ESP8266 (NodeMCU), L298N motor driver, and web-based control interface." />
+
+  <style>
+    :root{
+      --bg1: #e9f7ef;
+      --bg2: #f6fff9;
+      --accent: #2f7a4a;
+      --accent-2: #66b26b;
+      --muted: #6b6b6b;
+      --card: rgba(255,255,255,0.85);
+      --glass-shadow: 0 6px 20px rgba(15,30,10,0.06);
+      font-family: Inter, "Segoe UI", Roboto, system-ui, -apple-system, "Noto Sans", "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background: linear-gradient(180deg,var(--bg1),var(--bg2));
+      color:#123;
+      line-height:1.45;
+      padding:20px;
+      display:flex;
+      justify-content:center;
+    }
+    .wrap{width:100%;max-width:980px;}
+    header{
+      background:
+        radial-gradient(800px 200px at 10% 10%, rgba(102,178,107,0.10), transparent 10%),
+        linear-gradient(135deg, rgba(47,122,74,0.08), rgba(102,178,107,0.04));
+      border-radius: 14px;
+      padding:18px;
+      box-shadow: var(--glass-shadow);
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    header .leaf{
+      width:72px;height:72px;
+      flex:0 0 72px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:50%;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      color:#fff;
+      animation: float 6s ease-in-out infinite;
+    }
+    @keyframes float{
+      0%{transform:translateY(0)}
+      50%{transform:translateY(-8px) rotate(-6deg)}
+      100%{transform:translateY(0)}
+    }
+    header h1{margin:0;font-size:1.05rem;}
+    header p{margin:4px 0 0 0;color:var(--muted);font-size:0.9rem;}
+    main{margin-top:14px;display:grid;grid-template-columns:1fr;gap:14px;}
+    @media(min-width:860px){main{grid-template-columns: 1fr 360px;}}
+    .card{
+      background:var(--card);
+      padding:14px;
+      border-radius:12px;
+      box-shadow:var(--glass-shadow);
+    }
+    .section-title{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+    .pill{
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:white;padding:6px 10px;border-radius:999px;font-weight:600;font-size:0.8rem;
+    }
+    h2{margin:0;font-size:1rem;}
+    small{color:var(--muted);display:block;margin-top:6px;}
+    ul.clean{padding-left:18px;margin:8px 0;}
+    ul.components{list-style:none;padding:0;margin:0;display:grid;gap:8px;}
+    ul.components li{
+      background:linear-gradient(90deg, rgba(255,255,255,0.6), rgba(255,255,255,0.5));
+      padding:10px;border-radius:10px;display:flex;gap:10px;align-items:center;
+      border-left:4px solid rgba(47,122,74,0.12);
+      font-size:0.95rem;
+    }
+    .code{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+      background:linear-gradient(180deg,#f7fbf7,#ffffff);
+      padding:12px;border-radius:8px;border:1px solid rgba(0,0,0,0.04);
+      font-size:0.78rem;overflow:auto;
+      box-shadow:0 4px 12px rgba(0,0,0,0.03);
+    }
+    .meta-grid{display:grid;gap:8px;grid-template-columns:1fr 1fr;margin-top:12px;}
+    .meta{
+      background:linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.45));
+      padding:10px;border-radius:10px;font-size:0.92rem;
+      border:1px solid rgba(30,80,40,0.03);
+    }
+    .reveal{opacity:0;transform:translateY(8px);transition:opacity .6s ease, transform .6s ease;}
+    .reveal.visible{opacity:1;transform:none;}
+    footer{text-align:center;color:var(--muted);font-size:0.85rem;margin-top:18px;}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header class="reveal">
+    <div class="leaf">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
+        <path d="M2 12c6-2 10-8 20-10-4 8-6 14-18 18C4 20 2 16 2 12z" fill="rgba(255,255,255,0.95)"/>
+      </svg>
+    </div>
+    <div>
+      <h1>Wi-Fi Controlled Car</h1>
+      <p>ESP8266-based robot car with web interface for real-time movement control</p>
+      <small>Project by <strong>Ritam Ghosh</strong></small>
+    </div>
+  </header>
+
+  <main>
+    <!-- left column -->
+    <section class="card reveal" id="left">
+      <div class="section-title">
+        <span class="pill">Overview</span>
+      </div>
+      <p>This project uses an ESP8266 (NodeMCU) to create a Wi-Fi-enabled robot car controllable via a simple web page hosted directly on the microcontroller. 
+      It uses an L298N motor driver to operate two DC motors for movement in all directions.</p>
+
+      <hr style="border:0;height:12px;">
+
+      <h2>Hardware Components</h2>
+      <ul class="components">
+        <li><strong>ESP8266 (NodeMCU)</strong> — Wi-Fi microcontroller & web server</li>
+        <li><strong>L298N Motor Driver</strong> — Controls 2 DC motors with H-Bridge</li>
+        <li><strong>2× DC Motors + Wheels</strong> — Movement</li>
+        <li><strong>Power Supply</strong> — 7.4V–12V for motors, 5V for ESP</li>
+        <li><strong>Chassis</strong> — Mount for electronics and motors</li>
+        <li><strong>Jumper Wires</strong> — Connections</li>
+        <li><strong>Optional: Ultrasonic sensor</strong> — Obstacle avoidance</li>
+      </ul>
+
+      <hr style="border:0;height:12px;">
+
+      <h2>Software & Programming</h2>
+      <ul class="clean">
+        <li>Programmed using Arduino IDE with <code>ESP8266WiFi.h</code> and <code>ESP8266WebServer.h</code>.</li>
+        <li>Two modes:
+          <ul>
+            <li><strong>AP Mode</strong>: Phone connects directly to car’s Wi-Fi.</li>
+            <li><strong>STA Mode</strong>: Car connects to your home Wi-Fi network.</li>
+          </ul>
+        </li>
+        <li>Web server hosts control page with Forward, Backward, Left, Right, Stop buttons.</li>
+        <li>Button press sends HTTP GET request (e.g., <code>/forward</code>).</li>
+        <li>ESP8266 interprets request and sets motor driver pins accordingly.</li>
+      </ul>
+
+      <div class="code" style="margin-top:10px">
+<pre>// Example: Move Forward
+if (server.uri() == "/forward") {
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
+  digitalWrite(IN3, HIGH);
+  digitalWrite(IN4, LOW);
+}</pre>
+      </div>
+
+      <hr style="border:0;height:12px;">
+
+      <h2>Communication Flow</h2>
+      <ul class="clean">
+        <li>User clicks control button on webpage.</li>
+        <li>Browser sends HTTP request to ESP8266.</li>
+        <li>ESP8266 decodes request and sets GPIO outputs.</li>
+        <li>Motor driver spins motors in correct direction.</li>
+      </ul>
+
+      <hr style="border:0;height:12px;">
+
+      <h2>Enhancements</h2>
+      <ul class="clean">
+        <li>Replace HTTP with WebSockets for instant, low-latency control.</li>
+        <li>Add PWM speed control.</li>
+        <li>Integrate camera module (ESP32-CAM) for live FPV streaming.</li>
+        <li>Add ultrasonic sensors for autonomous obstacle avoidance.</li>
+        <li>Battery voltage monitoring.</li>
+      </ul>
+
+      <hr style="border:0;height:12px;">
+
+      <h2>Troubleshooting Tips</h2>
+      <ul class="clean">
+        <li><strong>No power to ESP8266</strong> — Check 5V VIN pin & GND wiring.</li>
+        <li><strong>Motors not moving</strong> — Verify IN1–IN4 connections & logic signals.</li>
+        <li><strong>Response delay</strong> — Optimize code or use WebSockets.</li>
+        <li><strong>ESP resets</strong> — Voltage drop; add capacitors or separate ESP power.</li>
+      </ul>
+    </section>
+
+    <!-- right column -->
+    <aside>
+      <div class="card reveal">
+        <div class="section-title">
+          <span class="pill">Quick Facts</span>
+        </div>
+        <div class="muted">Difficulty</div>
+        <strong>Intermediate</strong>
+        <div style="margin-top:8px;">
+          <div class="muted">Control</div>
+          <strong>Web Interface</strong>
+        </div>
+        <div style="margin-top:8px;">
+          <div class="muted">Power</div>
+          <strong>7.4V–12V motors / 5V ESP</strong>
+        </div>
+      </div>
+
+      <div class="card reveal" style="margin-top:12px;">
+        <h2>Design Notes</h2>
+        <ul class="clean">
+          <li>Matches other project pages in layout & style.</li>
+          <li>Nature-inspired green theme with mobile-first design.</li>
+          <li>Expandable for FPV, autonomous driving, and IoT integration.</li>
+        </ul>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="reveal">
+    Wi-Fi powered robotics • By Ritam Ghosh
+  </footer>
+</div>
+
+<script>
+const obs = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting) e.target.classList.add('visible');
+  });
+},{threshold:0.12});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

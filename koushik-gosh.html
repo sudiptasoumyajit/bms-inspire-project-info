@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Solar Tracking System — Project</title>
+  <meta name="description" content="A solar tracking system using LDRs and Arduino Uno, designed to align a solar panel with the sun for maximum energy efficiency." />
+
+  <style>
+    :root{
+      --bg1: #e9f7ef;
+      --bg2: #f6fff9;
+      --accent: #2f7a4a;
+      --accent-2: #66b26b;
+      --muted: #6b6b6b;
+      --card: rgba(255,255,255,0.85);
+      --glass-shadow: 0 6px 20px rgba(15,30,10,0.06);
+      font-family: Inter, "Segoe UI", Roboto, system-ui, -apple-system, "Noto Sans", "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background: linear-gradient(180deg,var(--bg1),var(--bg2));
+      color:#123;
+      line-height:1.45;
+      padding:20px;
+      display:flex;
+      justify-content:center;
+    }
+    .wrap{width:100%;max-width:980px;}
+    header{
+      background:
+        radial-gradient(800px 200px at 10% 10%, rgba(102,178,107,0.10), transparent 10%),
+        linear-gradient(135deg, rgba(47,122,74,0.08), rgba(102,178,107,0.04));
+      border-radius: 14px;
+      padding:18px;
+      box-shadow: var(--glass-shadow);
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    header .leaf{
+      width:72px;height:72px;
+      flex:0 0 72px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:50%;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      color:#fff;
+      animation: float 6s ease-in-out infinite;
+    }
+    @keyframes float{
+      0%{transform:translateY(0)}
+      50%{transform:translateY(-8px) rotate(-6deg)}
+      100%{transform:translateY(0)}
+    }
+    header h1{margin:0;font-size:1.05rem;}
+    header p{margin:4px 0 0 0;color:var(--muted);font-size:0.9rem;}
+    main{margin-top:14px;display:grid;grid-template-columns:1fr;gap:14px;}
+    @media(min-width:860px){main{grid-template-columns: 1fr 360px;}}
+    .card{
+      background:var(--card);
+      padding:14px;
+      border-radius:12px;
+      box-shadow:var(--glass-shadow);
+    }
+    .section-title{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+    .pill{
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:white;padding:6px 10px;border-radius:999px;font-weight:600;font-size:0.8rem;
+    }
+    h2{margin:0;font-size:1rem;}
+    small{color:var(--muted);display:block;margin-top:6px;}
+    ul.clean{padding-left:18px;margin:8px 0;}
+    ul.components{list-style:none;padding:0;margin:0;display:grid;gap:8px;}
+    ul.components li{
+      background:linear-gradient(90deg, rgba(255,255,255,0.6), rgba(255,255,255,0.5));
+      padding:10px;border-radius:10px;display:flex;gap:10px;align-items:center;
+      border-left:4px solid rgba(47,122,74,0.12);
+      font-size:0.95rem;
+    }
+    .code{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+      background:linear-gradient(180deg,#f7fbf7,#ffffff);
+      padding:12px;border-radius:8px;border:1px solid rgba(0,0,0,0.04);
+      font-size:0.78rem;overflow:auto;
+      box-shadow:0 4px 12px rgba(0,0,0,0.03);
+    }
+    .meta-grid{display:grid;gap:8px;grid-template-columns:1fr 1fr;margin-top:12px;}
+    .meta{
+      background:linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.45));
+      padding:10px;border-radius:10px;font-size:0.92rem;
+      border:1px solid rgba(30,80,40,0.03);
+    }
+    .reveal{opacity:0;transform:translateY(8px);transition:opacity .6s ease, transform .6s ease;}
+    .reveal.visible{opacity:1;transform:none;}
+    footer{text-align:center;color:var(--muted);font-size:0.85rem;margin-top:18px;}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header class="reveal">
+    <div class="leaf">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
+        <path d="M2 12c6-2 10-8 20-10-4 8-6 14-18 18C4 20 2 16 2 12z" fill="rgba(255,255,255,0.95)"/>
+      </svg>
+    </div>
+    <div>
+      <h1>Solar Tracking System</h1>
+      <p>Arduino Uno & LDR-based solar panel alignment for maximum energy efficiency</p>
+      <small>Project by <strong>Koushik Gosh</strong></small>
+    </div>
+  </header>
+
+  <main>
+    <!-- left column -->
+    <section class="card reveal" id="left">
+      <div class="section-title">
+        <span class="pill">Overview</span>
+      </div>
+      <p>This project uses two LDR sensors and an Arduino Uno to keep a solar panel aligned with the sun’s position throughout the day, improving its energy capture efficiency compared to static panels.</p>
+
+      <hr style="border:0;height:12px;">
+
+      <h2>Components Required</h2>
+      <ul class="components">
+        <li>Arduino Uno (x1)</li>
+        <li>LDR sensors (x2)</li>
+        <li>10kΩ resistors (x2)</li>
+        <li>Servo Motor (e.g., SG90/MG996R) (x1)</li>
+        <li>Breadboard (x1)</li>
+        <li>Jumper wires (as needed)</li>
+        <li>Solar panel (optional) (x1)</li>
+        <li>Cardboard/plastic mount (x1)</li>
+        <li>Power supply (USB or external 5V) (x1)</li>
+      </ul>
+
+      <hr style="border:0;height:12px;">
+
+      <h2>How It Works</h2>
+      <p>The two LDRs detect light intensity from left and right. If one side detects more light, the servo rotates the panel toward that side. If the light levels are balanced, the panel holds position. This keeps the panel facing the sun directly.</p>
+
+      <div class="meta-grid">
+        <div class="meta">
+          <strong>LDR1</strong>
+          <div class="muted">Analog A0</div>
+        </div>
+        <div class="meta">
+          <strong>LDR2</strong>
+          <div class="muted">Analog A1</div>
+        </div>
+        <div class="meta">
+          <strong>Servo</strong>
+          <div class="muted">Digital Pin 9 (PWM)</div>
+        </div>
+      </div>
+
+      <hr style="border:0;height:12px;">
+
+      <h2>Arduino Code (Excerpt)</h2>
+      <div class="code">
+<pre>#include &lt;Servo.h&gt;
+
+Servo solarServo;
+const int ldrLeft = A0;
+const int ldrRight = A1;
+int pos = 90; // initial position
+
+void setup() {
+  solarServo.attach(9);
+  solarServo.write(pos);
+  Serial.begin(9600);
+}
+
+void loop() {
+  int leftValue = analogRead(ldrLeft);
+  int rightValue = analogRead(ldrRight);
+  int threshold = 50;
+
+  if (abs(leftValue - rightValue) <= threshold) return;
+
+  if (leftValue > rightValue) pos++;
+  else pos--;
+
+  pos = constrain(pos, 0, 180);
+  solarServo.write(pos);
+  delay(100);
+}</pre>
+      </div>
+
+      <hr style="border:0;height:12px;">
+
+      <h2>Testing & Calibration</h2>
+      <ul class="clean">
+        <li>Test indoors and outdoors under different light conditions.</li>
+        <li>Adjust <code>threshold</code> in code for your LDR sensitivity.</li>
+        <li>Ensure servo doesn’t jitter by fine-tuning delay and threshold.</li>
+      </ul>
+
+      <hr style="border:0;height:12px;">
+
+      <h2>Future Improvements</h2>
+      <ul class="clean">
+        <li>Add dual-axis tracking for vertical + horizontal alignment.</li>
+        <li>Use 4 LDRs for more precision.</li>
+        <li>Integrate data logging or wireless monitoring.</li>
+        <li>Power the tracker from the actual solar panel.</li>
+      </ul>
+    </section>
+
+    <!-- right column -->
+    <aside>
+      <div class="card reveal">
+        <div class="section-title">
+          <span class="pill">Quick Facts</span>
+        </div>
+        <div class="muted">Difficulty</div>
+        <strong>Beginner → Intermediate</strong>
+        <div style="margin-top:8px;">
+          <div class="muted">Rotation</div>
+          <strong>Single-axis</strong>
+        </div>
+        <div style="margin-top:8px;">
+          <div class="muted">Power</div>
+          <strong>USB / 5V supply</strong>
+        </div>
+      </div>
+
+      <div class="card reveal" style="margin-top:12px;">
+        <h2>Design Notes</h2>
+        <ul class="clean">
+          <li>Mobile-first layout, matches project set design.</li>
+          <li>Nature-inspired green theme.</li>
+          <li>Animated reveal sections for presentation impact.</li>
+        </ul>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="reveal">
+    Designed for sustainable energy • By Koushik Gosh
+  </footer>
+</div>
+
+<script>
+const obs = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting) e.target.classList.add('visible');
+  });
+},{threshold:0.12});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

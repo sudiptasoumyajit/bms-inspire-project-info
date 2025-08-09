@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Flower Drone — Welcome Drone</title>
+<meta name="description" content="Flower Drone: a Wi-Fi controlled drone that gently releases flowers/petals to welcome guests. Includes hardware, electronics, assembly, control UI and safety guidelines." />
+<style>
+:root{
+  --bg1:#f0fbf3; --bg2:#e8fff4;
+  --accent:#2f7a4a; --accent2:#66b26b; --muted:#606b5f;
+  --card:rgba(255,255,255,0.92);
+  --radius:14px;
+  --glass-shadow:0 6px 20px rgba(15,30,10,0.06);
+  font-family: Inter, "Segoe UI", Roboto, system-ui, -apple-system, "Noto Sans", Arial;
+}
+*{box-sizing:border-box}
+html,body{height:100%; margin:0}
+body{
+  background:linear-gradient(180deg,var(--bg1),var(--bg2));
+  color:#123; padding:18px; display:flex; justify-content:center;
+  -webkit-font-smoothing:antialiased;
+}
+.container{width:100%;max-width:980px}
+header{
+  background:linear-gradient(135deg, rgba(47,122,74,0.06), rgba(102,178,107,0.04));
+  border-radius:var(--radius); padding:16px; display:flex; gap:12px; align-items:center; box-shadow:var(--glass-shadow);
+}
+.logo{
+  width:68px;height:68px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; font-weight:700;
+  transform:translateY(0); animation:float 6s ease-in-out infinite;
+}
+@keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-7px) rotate(-4deg)}100%{transform:translateY(0)}}
+h1{margin:0;font-size:1.05rem}
+.subtitle{color:var(--muted);margin-top:6px;font-size:0.9rem}
+
+main{margin-top:14px; display:grid; grid-template-columns:1fr; gap:14px}
+@media(min-width:860px){ main{grid-template-columns:1fr 360px} }
+
+.card{background:var(--card); padding:14px; border-radius:12px; box-shadow:var(--glass-shadow)}
+.pill{background:linear-gradient(90deg,var(--accent),var(--accent2)); color:#fff; padding:6px 10px; border-radius:999px; font-weight:700; font-size:0.82rem}
+.section-title{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.small{color:var(--muted);font-size:0.92rem}
+ul{padding-left:18px}
+.meta-grid{display:grid; gap:8px; grid-template-columns:1fr 1fr; margin-top:12px}
+.meta{background:linear-gradient(180deg, #fff, rgba(255,255,255,0.9)); padding:10px;border-radius:10px;border:1px solid rgba(0,0,0,0.03)}
+.code{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace; background:#fbfdfb; padding:12px; border-radius:8px; font-size:0.82rem; overflow:auto}
+.reveal{opacity:0; transform:translateY(8px); transition:opacity .55s ease, transform .55s ease}
+.reveal.visible{opacity:1; transform:none}
+footer{text-align:center;color:var(--muted);margin-top:16px;font-size:0.9rem}
+
+/* checklist style */
+.checklist{display:grid;gap:8px}
+.check{display:flex;gap:10px;align-items:flex-start}
+.check input{margin-top:4px}
+
+/* release mechanism diagram box */
+.release{
+  border-radius:10px;padding:10px;background:linear-gradient(180deg,#ffffff,#f7fff7);border:1px solid rgba(0,0,0,0.03)
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <header class="reveal">
+    <div class="logo" aria-hidden>FD</div>
+    <div>
+      <h1>Flower Drone — Welcome Drone</h1>
+      <div class="subtitle">A Wi-Fi controlled quad-rotor that gently dispenses flowers/petals to welcome guests — safe, elegant, and automated.</div>
+      <div class="small" style="margin-top:8px">Project authors (original notes): Soumyajit Das &amp; Sounak Sir — adapted for welcome-drone use.</div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Main content -->
+    <section class="card reveal" id="left">
+      <div class="section-title">
+        <span class="pill">Project Summary</span>
+      </div>
+      <p class="small">This Flower Drone is built to create a memorable guest welcome by flying to a safe overhead height and releasing flower petals or very light artificial flowers. The system uses a Wi-Fi motor controller for on-demand release and supports both autonomous sequences and manual control via a mobile web UI.</p>
+
+      <hr style="margin:12px 0;border:0;height:10px">
+
+      <h2>Design Concept & Use Case</h2>
+      <p>The drone’s behaviour is tuned for ceremonies and entrances:</p>
+      <ul>
+        <li>Lift to a preset *release altitude* (e.g. 2.5–4 m depending on venue) over a designated drop point.</li>
+        <li>Stabilize — maintain hover for 1–2 seconds to reduce drift.</li>
+        <li>Activate the gentle release mechanism to dispense petals in a soft shower.</li>
+        <li>Ascend to a safe clearance height and return to a home/wait position.</li>
+      </ul>
+
+      <hr>
+
+      <h2>Key Requirements</h2>
+      <ul>
+        <li>Very smooth, low-impact release — avoid projectile behaviour.</li>
+        <li>Redundant safety: automatic abort if people are too close or wind is high.</li>
+        <li>Reliable Wi-Fi control using the LOL1n web controller or onboard flight controller integration.</li>
+        <li>Short flight time per mission — optimize payload and battery for 5–10 minute ceremonies.</li>
+      </ul>
+
+      <hr>
+
+      <h2>Hardware — Airframe & Propulsion</h2>
+      <ul class="components">
+        <li><strong>Frame:</strong> Small to medium quadcopter frame (250–450 mm) with landing gear tall enough for the release mechanism.</li>
+        <li><strong>Motors:</strong> 2204–2206 brushless motors (or appropriate size for chosen frame and payload).</li>
+        <li><strong>ESCs:</strong> 20–30A ESCs with soft start.</li>
+        <li><strong>Propellers:</strong> Low-noise props (reduce gusts on petals).</li>
+        <li><strong>Flight controller:</strong> Pixhawk / Betaflight / Ardupilot compatible board (stabilization + mission support).</li>
+        <li><strong>Battery:</strong> LiPo 3S–4S sized for ~8–15 min hover (depending on motors & payload).</li>
+        <li><strong>GPS / Optical flow:</strong> for stable position hold if outdoors/indoors.</li>
+      </ul>
+
+      <hr>
+
+      <h2>Hardware — Flower Holding & Release Mechanism</h2>
+      <div class="release">
+        <strong>Gentle scoop + servo release</strong>
+        <p>Recommended: a small containment drum or cup under the fuselage that holds loose petals or pre-arranged small artificial flowers. A micro-servo actuates a trapdoor or slide that opens briefly to release contents. Design notes:</p>
+        <ul>
+          <li>Use a servo with metal gears (e.g., MG90S) for reliability.</li>
+          <li>Add a soft internal baffle so petals fall outward rather than streaming directly downward in a single column.</li>
+          <li>Limit per-release payload to avoid overloading motors (typical 20–80 g).</li>
+          <li>Consider a multi-chamber dispenser for multiple small bursts.</li>
+        </ul>
+      </div>
+
+      <hr>
+
+      <h2>Electronics & Control (Wi-Fi LOL1n integration)</h2>
+      <p>We adapt your LOL1n Wi-Fi motor controller approach for a release actuator and mission triggers. The drone still uses a dedicated flight controller for flight; the LOL1n (ESP8266) provides a simple web UI to trigger the release, change modes, or run a preprogrammed welcome sequence.</p>
+
+      <div class="meta-grid">
+        <div class="meta">
+          <strong>LOL1n role</strong>
+          <div class="small">Host web UI, send GPIO signal to servo driver / release relay</div>
+        </div>
+        <div class="meta">
+          <strong>Flight controller role</strong>
+          <div class="small">Flight stabilization, GPS/position hold, mission waypoints, fail-safe RTL</div>
+        </div>
+      </div>
+
+      <h3>Simple release command (example)</h3>
+      <div class="code">
+<pre>// On the LOL1n (ESP8266) web handler:
+void handleRelease() {
+  digitalWrite(RELEASE_PIN, HIGH); // trigger servo/driver
+  delay(400);                       // open time (tweak)
+  digitalWrite(RELEASE_PIN, LOW);  // close
+}</pre>
+      </div>
+
+      <p class="small">In practice the LOL1n should only trigger the release when the flight controller reports stable hover and altitude via a safe handshake (see Safety section).</p>
+
+      <hr>
+
+      <h2>Software & Flight Logic</h2>
+      <ol>
+        <li>Preflight check (battery, GPS fix/optical-flow, release servo healthy).</li>
+        <li>Takeoff to <em>approach altitude</em>.</li>
+        <li>Navigate to release waypoint using flight controller mission or manual pilot.</li>
+        <li>Hold position and confirm stability (IMU + EKF/optical flow). If stable: enable release arm.</li>
+        <li>Activate release via LOL1n or integrated MAVLink command.</li>
+        <li>Wait 1–2 s, ascend to clearance altitude, return to home or land.</li>
+      </ol>
+
+      <hr>
+
+      <h2>Safety & Operational Guidelines</h2>
+      <ul class="clean">
+        <li><strong>Do not fly over crowds:</strong> keep a buffer zone — best practice is to release when guests are in an open area and the drone is at sufficient altitude to avoid contact.</li>
+        <li><strong>Maximum payload:</strong> keep payload very light (ideally < 80 g) to avoid unstable thrust changes.</li>
+        <li><strong>Fail-safe:</strong> configure RTL (return-to-land) on signal loss, and abort release on excessive drift or gusts.</li>
+        <li><strong>Wind limits:</strong> avoid flights in wind > 8–10 m/s (adjust for your frame size).</li>
+        <li><strong>Human safety:</strong> never target a release directly over a person’s head — design petals to disperse widely and land softly.</li>
+        <li><strong>Legal & permissions:</strong> follow local UAV laws and event permissions; some venues require permits or insurance.</li>
+      </ul>
+
+      <hr>
+
+      <h2>Testing Procedure (step-by-step)</h2>
+      <ol>
+        <li>Bench test release mechanism while vehicle powered off: confirm servo ranges and smooth motion.</li>
+        <li>Static hover tests with no payload — verify flight controller holds position and motors respond.</li>
+        <li>Low-altitude tethered drop test with small payloads — verify distribution and motor load.</li>
+        <li>Short automated mission with empty release bin — ensure mission triggers and RTL work.</li>
+        <li>Full dress rehearsal at event altitude with soft petals, minimal audience, and safety observers.</li>
+      </ol>
+
+      <hr>
+
+      <h2>Maintenance & Preflight Checklist</h2>
+      <div class="checklist">
+        <label class="check"><input type="checkbox" /> Battery charge ≥ required capacity</label>
+        <label class="check"><input type="checkbox" /> Props, motors, ESCs visually good</label>
+        <label class="check"><input type="checkbox" /> Release mechanism clean & servo tested</label>
+        <label class="check"><input type="checkbox" /> Flight controller sensors calibrated</label>
+        <label class="check"><input type="checkbox" /> Wi-Fi / web UI reachable (LOL1n)</label>
+        <label class="check"><input type="checkbox" /> Safe flight area & permission confirmed</label>
+      </div>
+
+      <hr>
+
+      <h2>Possible Improvements & Future Features</h2>
+      <ul class="clean">
+        <li>Integrate MAVLink handshake: flight controller exposes “stable hover” flag before LOL1n triggers release.</li>
+        <li>Multi-burst release with timed intervals — create layered floral effects.</li>
+        <li>Onboard vision to detect people positions, avoid accidental drops near heads.</li>
+        <li>Telemetry logging for post-event analysis (battery, payload weight, release times).</li>
+        <li>Swarm choreography — multiple small drones for theatrical effects (highly controlled and safety-first).</li>
+      </ul>
+    </section>
+
+    <!-- Right column -->
+    <aside>
+      <div class="card reveal">
+        <div class="section-title"><span class="pill">Quick Facts</span></div>
+        <p><strong>Primary Purpose:</strong> Ceremony guest welcome via gentle flower release</p>
+        <p><strong>Suggested Release Altitude:</strong> 2.5–4 m (venue dependent)</p>
+        <p><strong>Typical Payload:</strong> 20–80 g (petals or small faux flowers)</p>
+        <p><strong>Flight Time (approx):</strong> 6–12 minutes (depends on frame/battery)</p>
+      </div>
+
+      <div class="card reveal" style="margin-top:12px">
+        <h3>LOL1n Setup / Quick Steps</h3>
+        <ol class="small">
+          <li>Flash ESP8266 with your web UI firmware (NodeMCU/LOL1n board).</li>
+          <li>Set SSID & password in the sketch (or use AP mode for direct connect).</li>
+          <li>Wire RELEASE_PIN from ESP to a servo driver or to a MOSFET/relay controlling the release servo power (use safe level shifting).</li>
+          <li>Test web button — it should pulse RELEASE_PIN HIGH then LOW for configured milliseconds.</li>
+          <li>Integrate handshake: only allow web release if flight controller publishes 'safe' to a defined GPIO or over serial.</li>
+        </ol>
+      </div>
+
+      <div class="card reveal" style="margin-top:12px">
+        <h3>Troubleshooting Tips</h3>
+        <ul class="small">
+          <li><strong>No response from release:</strong> Check RELEASE_PIN wiring and power to servo (LiPo vs. 5V regulator).</li>
+          <li><strong>Servo jitter:</strong> Add a small capacitor near servo power rail and filter power lines.</li>
+          <li><strong>Drone drifts after release:</strong> Balance the remaining payload and retune hover PID gains.</li>
+          <li><strong>Wi-Fi disconnects:</strong> Use AP mode or a dedicated event Wi-Fi to avoid interference.</li>
+        </ul>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="reveal">Made for memorable welcomes • Design responsibly & test thoroughly</footer>
+</div>
+
+<script>
+// reveal animations
+const obs = new IntersectionObserver((entries)=>{
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+},{threshold:0.12});
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ultrasonic Radar — Project</title>
+  <meta name="description" content="An Arduino and Processing-based Ultrasonic Radar system for object detection and visualization." />
+
+  <style>
+    :root{
+      --bg1: #e9f7ef;
+      --bg2: #f6fff9;
+      --accent: #2f7a4a;
+      --accent-2: #66b26b;
+      --muted: #6b6b6b;
+      --card: rgba(255,255,255,0.85);
+      --glass-shadow: 0 6px 20px rgba(15,30,10,0.06);
+      font-family: Inter, "Segoe UI", Roboto, system-ui, -apple-system, "Noto Sans", "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background: linear-gradient(180deg,var(--bg1),var(--bg2));
+      color:#123;
+      line-height:1.45;
+      padding:20px;
+      display:flex;
+      justify-content:center;
+    }
+    .wrap{width:100%;max-width:980px;}
+    header{
+      background:
+        radial-gradient(800px 200px at 10% 10%, rgba(102,178,107,0.10), transparent 10%),
+        linear-gradient(135deg, rgba(47,122,74,0.08), rgba(102,178,107,0.04));
+      border-radius: 14px;
+      padding:18px;
+      box-shadow: var(--glass-shadow);
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    header .leaf{
+      width:72px;height:72px;
+      flex:0 0 72px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:50%;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      color:#fff;
+      animation: float 6s ease-in-out infinite;
+    }
+    @keyframes float{
+      0%{transform:translateY(0)}
+      50%{transform:translateY(-8px) rotate(-6deg)}
+      100%{transform:translateY(0)}
+    }
+    header h1{margin:0;font-size:1.05rem;}
+    header p{margin:4px 0 0 0;color:var(--muted);font-size:0.9rem;}
+    main{margin-top:14px;display:grid;grid-template-columns:1fr;gap:14px;}
+    @media(min-width:860px){main{grid-template-columns: 1fr 360px;}}
+    .card{
+      background:var(--card);
+      padding:14px;
+      border-radius:12px;
+      box-shadow:var(--glass-shadow);
+    }
+    .section-title{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+    .pill{
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:white;padding:6px 10px;border-radius:999px;font-weight:600;font-size:0.8rem;
+    }
+    h2{margin:0;font-size:1rem;}
+    small{color:var(--muted);display:block;margin-top:6px;}
+    ul.clean{padding-left:18px;margin:8px 0;}
+    ul.components{list-style:none;padding:0;margin:0;display:grid;gap:8px;}
+    ul.components li{
+      background:linear-gradient(90deg, rgba(255,255,255,0.6), rgba(255,255,255,0.5));
+      padding:10px;border-radius:10px;display:flex;gap:10px;align-items:center;
+      border-left:4px solid rgba(47,122,74,0.12);
+      font-size:0.95rem;
+    }
+    .code{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+      background:linear-gradient(180deg,#f7fbf7,#ffffff);
+      padding:12px;border-radius:8px;border:1px solid rgba(0,0,0,0.04);
+      font-size:0.78rem;overflow:auto;
+      box-shadow:0 4px 12px rgba(0,0,0,0.03);
+    }
+    .reveal{opacity:0;transform:translateY(8px);transition:opacity .6s ease, transform .6s ease;}
+    .reveal.visible{opacity:1;transform:none;}
+    footer{text-align:center;color:var(--muted);font-size:0.85rem;margin-top:18px;}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header class="reveal">
+    <div class="leaf">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
+        <path d="M2 12c6-2 10-8 20-10-4 8-6 14-18 18C4 20 2 16 2 12z" fill="rgba(255,255,255,0.95)"/>
+      </svg>
+    </div>
+    <div>
+      <h1>Ultrasonic Radar System</h1>
+      <p>Arduino + Processing-based object detection and visualization</p>
+      <small>Project by <strong>Sankalan</strong></small>
+    </div>
+  </header>
+
+  <main>
+    <section class="card reveal">
+      <div class="section-title">
+        <span class="pill">Introduction</span>
+      </div>
+      <p>The Ultrasonic Radar system is designed to detect and visualize the position of nearby objects using an ultrasonic sensor mounted on a servo motor. The Arduino gathers distance data, which is then displayed on a radar-like interface using Processing.</p>
+
+      <hr>
+
+      <h2>History of Radar</h2>
+      <p>Radar (Radio Detection and Ranging) technology originated in the early 20th century and became crucial during World War II for detecting enemy aircraft and ships. Modern applications include air traffic control, weather monitoring, and autonomous vehicles.</p>
+
+      <hr>
+
+      <h2>Working Principle</h2>
+      <ul class="clean">
+        <li>An <strong>HC-SR04 ultrasonic sensor</strong> emits high-frequency sound waves.</li>
+        <li>The sound waves bounce back when they hit an object.</li>
+        <li>The sensor calculates the distance based on the time taken for the echo to return.</li>
+        <li>A <strong>servo motor</strong> rotates the sensor to scan the area.</li>
+        <li>The Arduino sends distance and angle data to the Processing application via serial communication.</li>
+        <li>Processing draws a radar display in real time based on the received data.</li>
+      </ul>
+
+      <hr>
+
+      <h2>Hardware Components</h2>
+      <ul class="components">
+        <li>Arduino Uno</li>
+        <li>HC-SR04 Ultrasonic Sensor</li>
+        <li>SG90 Servo Motor</li>
+        <li>Breadboard & Jumper Wires</li>
+        <li>USB Cable</li>
+        <li>Computer with Processing IDE</li>
+      </ul>
+
+      <h2>Software Components</h2>
+      <ul class="components">
+        <li>Arduino IDE</li>
+        <li>Processing IDE</li>
+        <li>Arduino Serial Communication Library</li>
+      </ul>
+
+      <hr>
+
+      <h2>Methodology</h2>
+      <ul class="clean">
+        <li>Mount the ultrasonic sensor on the servo motor.</li>
+        <li>Connect the servo and sensor to Arduino pins.</li>
+        <li>Upload Arduino sketch to control servo sweep and read sensor data.</li>
+        <li>Send angle and distance readings over serial to the computer.</li>
+        <li>Processing program reads serial data and draws radar sweep with detected objects.</li>
+      </ul>
+
+      <hr>
+
+      <h2>Applications</h2>
+      <ul class="clean">
+        <li>Obstacle detection in robotics.</li>
+        <li>Security surveillance systems.</li>
+        <li>Mapping of enclosed environments.</li>
+        <li>Educational demonstrations of radar principles.</li>
+      </ul>
+
+      <hr>
+
+      <h2>Possible Improvements</h2>
+      <ul class="clean">
+        <li>Increase scanning resolution with smaller servo step angles.</li>
+        <li>Implement dual-sensor system for faster coverage.</li>
+        <li>Add wireless data transfer via Bluetooth or Wi-Fi.</li>
+        <li>Integrate with machine learning for object classification.</li>
+      </ul>
+    </section>
+
+    <aside>
+      <div class="card reveal">
+        <div class="section-title">
+          <span class="pill">Quick Facts</span>
+        </div>
+        <p><strong>Scanning Range:</strong> ~2cm to 400cm</p>
+        <p><strong>Sensor Angle:</strong> ~15°</p>
+        <p><strong>Control:</strong> Automated sweep</p>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="reveal">
+    Radar visualization for modern applications • By Sankalan
+  </footer>
+</div>
+
+<script>
+const obs = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting) e.target.classList.add('visible');
+  });
+},{threshold:0.12});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

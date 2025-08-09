@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Project Info — _Project Title_</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#f7f8fb;--card:#ffffff;--accent:#0069c0;--muted:#6b7280;
+      --radius:12px;--gap:18px;--maxw:900px;
+    }
+    *{box-sizing:border-box;font-family:Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial}
+    body{background:linear-gradient(180deg,#f2f6fb, var(--bg));margin:24px;display:flex;justify-content:center}
+    .wrap{width:100%;max-width:var(--maxw);}
+    .header{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+    .logo{width:72px;height:72px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#40a9ff);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:22px;box-shadow:0 6px 18px rgba(2,6,23,0.08)}
+    .title-block{flex:1}
+    h1{margin:0;font-size:20px}
+    p.lead{margin:4px 0 0;color:var(--muted);font-size:13px}
+
+    .card{background:var(--card);border-radius:var(--radius);padding:18px;box-shadow:0 8px 30px rgba(14,30,37,0.06);margin-bottom:var(--gap)}
+    .meta{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+    .chip{background:#f1f5f9;padding:8px 10px;border-radius:999px;font-size:13px;color:#334155}
+
+    .grid{display:grid;grid-template-columns:1fr;gap:12px}
+    @media(min-width:820px){.grid{grid-template-columns:1fr 340px}}
+
+    .section h2{margin:0 0 8px;font-size:15px}
+    .section p{margin:0;color:#374151;line-height:1.5}
+
+    .right .card.small{padding:12px}
+    .materials ul{padding-left:16px;margin:6px 0}
+    .materials li{margin:6px 0}
+
+    .foot{display:flex;justify-content:space-between;align-items:center;margin-top:12px;color:var(--muted);font-size:13px}
+    .btn{display:inline-block;padding:8px 12px;border-radius:8px;background:var(--accent);color:white;text-decoration:none;font-weight:600}
+
+    /* subtle collapsible */
+    details{background:#fbfdff;border-radius:8px;padding:10px}
+    summary{cursor:pointer;font-weight:600}
+
+    /* Optional blocky Indian-style variant (uncomment body.indian to enable) */
+    /* body.indian { --accent:#004aad; background: linear-gradient(180deg,#fff,#f3f6ff);} */
+    /* body.indian .logo{border-radius:6px; box-shadow:none; font-size:20px} */
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="header">
+      <div class="logo">PI</div>
+      <div class="title-block">
+        <h1 id="project-title">Project Title (placeholder)</h1>
+        <p class="lead" id="project-sub">One-line summary — short, clear.</p>
+      </div>
+      <div style="text-align:right">
+        <div class="chip" id="project-maker">Made by: <strong>Maker Name</strong></div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div>
+        <section class="card section">
+          <h2>How it works</h2>
+          <p id="how-it-works">Paste a concise, step-by-step explanation here. Describe what the project does and how user interacts with it.</p>
+        </section>
+
+        <section class="card section">
+          <h2>Theory</h2>
+          <p id="theory">Explain the scientific / engineering theory behind the project. Keep it short — 3–6 lines or a few bullet points.</p>
+        </section>
+
+        <section class="card section materials">
+          <h2>Materials & Tools</h2>
+          <ul id="materials-list">
+            <li>Material 1 / Component (e.g. Arduino Uno)</li>
+            <li>Material 2 / Sensor / Library</li>
+            <li>Any additional tools or software</li>
+          </ul>
+        </section>
+
+        <section class="card section">
+          <h2>Concept & Nature</h2>
+          <p id="concept">Is this project theoretical, experimental, hardware-based, software-only, or a hybrid? Mention environmental impact or whether it’s suitable for classroom/demo.</p>
+        </section>
+
+        <section class="card">
+          <details>
+            <summary>Extra: Usage notes & tips</summary>
+            <div style="margin-top:8px;color:#334155;font-size:14px">
+              <p id="tips">Small tips, safety notes, or extension ideas go here.</p>
+            </div>
+          </details>
+        </section>
+      </div>
+
+      <aside class="right">
+        <div class="card small">
+          <h3 style="margin:0 0 8px">Quick facts</h3>
+          <div class="meta">
+            <div class="chip" id="time-est">Time: 1–2 hours</div>
+            <div class="chip" id="difficulty">Difficulty: Beginner</div>
+            <div class="chip" id="category">Category: Demo / Prototype</div>
+          </div>
+        </div>
+
+        <div class="card small">
+          <h3 style="margin:0 0 8px">Files & Links</h3>
+          <p style="margin:0 0 8px;font-size:13px;color:var(--muted)">Add links to code, datasheets and downloads.</p>
+          <a class="btn" href="#" id="download-btn">Download ZIP</a>
+        </div>
+
+        <div class="card small">
+          <h3 style="margin:0 0 8px">Credits</h3>
+          <p style="margin:0;font-size:13px;color:var(--muted)"><strong id="credit-name">Maker Name</strong><br><span id="credit-details">Role — Student / Developer</span></p>
+        </div>
+      </aside>
+    </div>
+
+    <div class="foot card">
+      <div>Generated by Project Info Generator</div>
+      <div style="opacity:0.9">Printable · Lightweight · Mobile-friendly</div>
+    </div>
+  </div>
+
+  <script>
+    // Helper: Replace placeholders quickly when you paste content as JSON into the console.
+    // Example usage in browser console:
+    // fill({title:'Smart Dustbin',maker:'Soumyajit Das',summary:'Auto dustbin',how:'Steps...',theory:'...',materials:['Arduino','Ultrasonic'],concept:'Hardware prototype',tips:'Keep batteries charged.'})
+    function fill(data){
+      if(data.title) document.getElementById('project-title').textContent = data.title;
+      if(data.sub) document.getElementById('project-sub').textContent = data.sub;
+      if(data.maker) document.getElementById('project-maker').innerHTML = 'Made by: <strong>'+data.maker+'</strong>';
+      if(data.how) document.getElementById('how-it-works').textContent = data.how;
+      if(data.theory) document.getElementById('theory').textContent = data.theory;
+      if(data.materials){
+        const ul = document.getElementById('materials-list'); ul.innerHTML = '';
+        data.materials.forEach(m=>{const li=document.createElement('li');li.textContent=m;ul.appendChild(li)});
+      }
+      if(data.concept) document.getElementById('concept').textContent = data.concept;
+      if(data.tips) document.getElementById('tips').textContent = data.tips;
+      if(data.time) document.getElementById('time-est').textContent = 'Time: '+data.time;
+      if(data.difficulty) document.getElementById('difficulty').textContent = 'Difficulty: '+data.difficulty;
+      if(data.category) document.getElementById('category').textContent = data.category;
+      if(data.creditName) document.getElementById('credit-name').textContent = data.creditName;
+      if(data.creditDetails) document.getElementById('credit-details').textContent = data.creditDetails;
+    }
+  </script>
+</body>
+</html>
